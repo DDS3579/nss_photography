@@ -164,3 +164,7 @@ desktop.ini
 .stylelintcache
 .parcel-cache/
 *.tgz
+
+
+.wrangler/
+.dev.vars
