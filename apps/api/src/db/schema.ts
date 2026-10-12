@@ -28,3 +28,24 @@ export const submissions = sqliteTable("submissions", {
   createdAt: text("created_at").notNull(),
   updatedAt: text("updated_at").notNull(),
 });
+
+export const files = sqliteTable("files", {
+  id: text("id").primaryKey(),
+  submissionId: text("submission_id").notNull(),
+  category: text("category").notNull(),
+  r2Key: text("r2_key").notNull(),
+  filename: text("filename").notNull(),
+  mimeType: text("mime_type").notNull(),
+  sizeBytes: integer("size_bytes").notNull(),
+  uploadStatus: text("upload_status").notNull().default("pending"),
+  multipartUploadId: text("multipart_upload_id"),
+  createdAt: text("created_at").notNull(),
+});
+
+export const uploadReservations = sqliteTable("upload_reservations", {
+  id: text("id").primaryKey(),
+  fileId: text("file_id").notNull(),
+  reservedBytes: integer("reserved_bytes").notNull(),
+  expiresAt: text("expires_at").notNull(),
+  createdAt: text("created_at").notNull(),
+});
