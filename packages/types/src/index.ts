@@ -128,3 +128,65 @@ export const ApiErrorSchema = z.object({
 });
 
 export type ApiError = z.infer<typeof ApiErrorSchema>;
+
+export const CompetitionInfoSchema = z.object({
+  isOpen: z.boolean(),
+  startDate: z.string(),
+  endDate: z.string(),
+  maxStorageBytes: z.number().int(),
+  maxPhotoSizeBytes: z.number().int(),
+  maxVideoSizeBytes: z.number().int(),
+});
+
+export type CompetitionInfo = z.infer<typeof CompetitionInfoSchema>;
+
+export const CreatedSubmissionSchema = z.object({
+  submissionId: z.string().min(1),
+  receiptToken: z.string().min(1),
+  status: SubmissionStatusSchema,
+});
+
+export type CreatedSubmission = z.infer<typeof CreatedSubmissionSchema>;
+
+export const ApiEnvelopeSchema = z.object({
+  success: z.boolean(),
+  data: z.unknown().optional(),
+  error: z.string().optional(),
+});
+
+export type ApiEnvelope = z.infer<typeof ApiEnvelopeSchema>;
+
+export const InitiateUploadSchema = z.object({
+  submissionId: z.string().min(1),
+  receiptToken: z.string().min(1),
+  category: CategorySchema,
+  filename: z.string().trim().min(1),
+  mimeType: z.string().trim().min(1),
+  sizeBytes: z.number().int().positive(),
+});
+
+export type InitiateUpload = z.infer<typeof InitiateUploadSchema>;
+
+export const InitiatedUploadSchema = z.object({
+  fileId: z.string().min(1),
+  uploadUrl: z.string().min(1),
+  expiresAt: z.string().min(1),
+});
+
+export type InitiatedUpload = z.infer<typeof InitiatedUploadSchema>;
+
+export const CompleteUploadSchema = z.object({
+  submissionId: z.string().min(1),
+  receiptToken: z.string().min(1),
+  fileId: z.string().min(1),
+});
+
+export type CompleteUpload = z.infer<typeof CompleteUploadSchema>;
+
+export const AbortUploadSchema = z.object({
+  submissionId: z.string().min(1),
+  receiptToken: z.string().min(1),
+  fileId: z.string().min(1),
+});
+
+export type AbortUpload = z.infer<typeof AbortUploadSchema>;
