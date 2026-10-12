@@ -48,6 +48,15 @@ function parseSqliteUtc(value: string): Date {
   return new Date(normalized.endsWith("Z") ? normalized : `${normalized}Z`);
 }
 
+function isUniqueConstraintError(error: unknown): boolean {
+  let current = error;
+  while (current instanceof Error) {
+    if (current.message.includes("UNIQUE constraint failed")) return true;
+    current = current.cause;
+  }
+  return false;
+}
+
 // ─── Health ──────────────────────────────────────────────
 
 app.get("/", (c) => c.text("competition api"));
@@ -159,8 +168,7 @@ app.post("/api/submissions", async (c) => {
       updatedAt: nowIso,
     });
   } catch (error) {
-    const msg = error instanceof Error ? error.message : String(error);
-    if (msg.includes("UNIQUE constraint failed")) {
+    if (isUniqueConstraintError(error)) {
       return c.json(
         { success: false, error: "A submission already exists for this grade, section, and roll number." },
         409
